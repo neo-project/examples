@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgencyTransaction", "AgencyTransaction\AgencyTransaction.csproj", "{2B3D92C9-CBCD-4AF7-9135-20CD97143ACF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{BB4BA99D-2AA8-436B-892D-F82375E565B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{F6ED9982-E374-4A37-8332-CE4368A9B802}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StructExample", "StructExample\StructExample.csproj", "{6777CA72-89CB-4FDD-84C3-BC82A440CD58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F6ED9982-E374-4A37-8332-CE4368A9B802}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6ED9982-E374-4A37-8332-CE4368A9B802}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6ED9982-E374-4A37-8332-CE4368A9B802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6777CA72-89CB-4FDD-84C3-BC82A440CD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6777CA72-89CB-4FDD-84C3-BC82A440CD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6777CA72-89CB-4FDD-84C3-BC82A440CD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6777CA72-89CB-4FDD-84C3-BC82A440CD58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
