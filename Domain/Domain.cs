@@ -24,34 +24,34 @@ namespace AntShares.SmartContract
 
         private static byte[] Query(string domain)
         {
-            return Storage.Get(StorageContext.Current, domain);
+            return Storage.Get(Storage.CurrentContext, domain);
         }
 
         private static bool Register(string domain, byte[] owner, byte[] signature)
         {
             if (!VerifySignature(owner, signature)) return false;
-            byte[] value = Storage.Get(StorageContext.Current, domain);
+            byte[] value = Storage.Get(Storage.CurrentContext, domain);
             if (value != null) return false;
-            Storage.Put(StorageContext.Current, domain, owner);
+            Storage.Put(Storage.CurrentContext, domain, owner);
             return true;
         }
 
         private static bool Transfer(string domain, byte[] signature_from, byte[] to, byte[] signature_to)
         {
             if (!VerifySignature(to, signature_to)) return false;
-            byte[] from = Storage.Get(StorageContext.Current, domain);
+            byte[] from = Storage.Get(Storage.CurrentContext, domain);
             if (from == null) return false;
             if (!VerifySignature(from, signature_from)) return false;
-            Storage.Put(StorageContext.Current, domain, to);
+            Storage.Put(Storage.CurrentContext, domain, to);
             return true;
         }
 
         private static bool Delete(string domain, byte[] signature)
         {
-            byte[] owner = Storage.Get(StorageContext.Current, domain);
+            byte[] owner = Storage.Get(Storage.CurrentContext, domain);
             if (owner == null) return false;
             if (!VerifySignature(owner, signature)) return false;
-            Storage.Delete(StorageContext.Current, domain);
+            Storage.Delete(Storage.CurrentContext, domain);
             return true;
         }
     }

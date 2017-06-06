@@ -1,5 +1,6 @@
 ﻿using AntShares.SmartContract.Framework;
 using AntShares.SmartContract.Framework.Services.AntShares;
+using AntShares.SmartContract.Framework.Services.System;
 using System.Numerics;
 
 namespace AntShares.SmartContract

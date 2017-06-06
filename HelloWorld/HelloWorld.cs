@@ -7,7 +7,7 @@ namespace AntShares.SmartContract
     {
         public static void Main()
         {
-            Storage.Put(StorageContext.Current, "Hello", "World");
+            Storage.Put(Storage.CurrentContext, "Hello", "World");
         }
     }
 }

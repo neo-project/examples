@@ -32,9 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntShares.SmartContract.Framework, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AntShares.SmartContract.Framework.1.6.0-preview4\lib\net40\AntShares.SmartContract.Framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="AntShares.SmartContract.Framework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AntShares.SmartContract.Framework.2.0.0\lib\net40\AntShares.SmartContract.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,8 +49,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="build.tasks" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AntShares.ILConvertPlugin.dll" />
