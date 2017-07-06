@@ -12,11 +12,11 @@ namespace AntShares.SmartContract
                 case "query":
                     return Query((string)args[0]);
                 case "register":
-                    return Register((string)args[0], (byte[])args[1], (byte[])args[2]);
+                    return Register((string)args[0], (byte[])args[1]);
                 case "transfer":
-                    return Transfer((string)args[0], (byte[])args[1], (byte[])args[2], (byte[])args[2]);
+                    return Transfer((string)args[0], (byte[])args[1]);
                 case "delete":
-                    return Delete((string)args[0], (byte[])args[1]);
+                    return Delete((string)args[0]);
                 default:
                     return false;
             }
@@ -27,30 +27,30 @@ namespace AntShares.SmartContract
             return Storage.Get(Storage.CurrentContext, domain);
         }
 
-        private static bool Register(string domain, byte[] owner, byte[] signature)
+        private static bool Register(string domain, byte[] owner)
         {
-            if (!VerifySignature(owner, signature)) return false;
+            if (!Runtime.CheckWitness(owner)) return false;
             byte[] value = Storage.Get(Storage.CurrentContext, domain);
             if (value != null) return false;
             Storage.Put(Storage.CurrentContext, domain, owner);
             return true;
         }
 
-        private static bool Transfer(string domain, byte[] signature_from, byte[] to, byte[] signature_to)
+        private static bool Transfer(string domain, byte[] to)
         {
-            if (!VerifySignature(to, signature_to)) return false;
+            if (!Runtime.CheckWitness(to)) return false;
             byte[] from = Storage.Get(Storage.CurrentContext, domain);
             if (from == null) return false;
-            if (!VerifySignature(from, signature_from)) return false;
+            if (!Runtime.CheckWitness(from)) return false;
             Storage.Put(Storage.CurrentContext, domain, to);
             return true;
         }
 
-        private static bool Delete(string domain, byte[] signature)
+        private static bool Delete(string domain)
         {
             byte[] owner = Storage.Get(Storage.CurrentContext, domain);
             if (owner == null) return false;
-            if (!VerifySignature(owner, signature)) return false;
+            if (!Runtime.CheckWitness(owner)) return false;
             Storage.Delete(Storage.CurrentContext, domain);
             return true;
         }

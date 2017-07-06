@@ -1,0 +1,252 @@
+﻿//public static bool Main(byte[] agent, byte[] assetId, byte[] valueId, byte[] client, bool way, BigInteger price, byte[] signature)
+
+//if (VerifySignature(client, signature)) return true;
+PUSH 6
+PICK
+PUSH 4
+ROLL
+CHECKSIG
+JMPIFNOT S01
+PUSH true
+TOALTSTACK
+JMP CLEAR
+
+//if (!VerifySignature(agent, signature)) return false;
+S01:
+PUSH 5
+ROLL
+SWAP
+CHECKSIG
+JMPIF S02
+PUSH false
+TOALTSTACK
+JMP CLEAR
+
+//set inputId and outputId
+S02:
+PUSH 2
+PICK
+JMPIF S03
+SWAP
+
+//BigInteger inputSum = 0, outputSum = 0;
+S03:
+PUSH 0
+PUSH 0
+
+//TransactionOutput[] references = ((Transaction)ExecutionEngine.ScriptContainer).GetReferences();
+SYSCALL System.ExecutionEngine.GetScriptContainer
+SYSCALL AntShares.Transaction.GetReferences
+
+//foreach (TransactionOutput reference in references)
+//{
+
+//initialize loop
+DUP
+ARRAYSIZE
+PUSH 0
+
+//exit test
+LOOP1:
+OVER
+OVER
+NUMEQUAL
+JMPIF S04
+
+//set reference
+PUSH 2
+PICK
+OVER
+PICKITEM
+
+//if (reference.ScriptHash.Equals(ExecutionEngine.EntryScriptHash))
+//{
+DUP
+SYSCALL AntShares.Output.GetScriptHash
+SYSCALL System.ExecutionEngine.GetEntryScriptHash
+EQUAL
+JMPIFNOT LOOP1S1
+
+//if (!reference.AssetId.Equals(inputId))
+DUP
+SYSCALL AntShares.Output.GetAssetId
+PUSH 7
+PICK
+EQUAL
+JMPIF LOOP1S2
+
+//return false;
+PUSH false
+TOALTSTACK
+JMP CLEAR
+
+//else
+LOOP1S2:
+
+//inputSum += reference.Value;
+DUP
+SYSCALL AntShares.Output.GetValue
+PUSH 5
+PICK
+ADD
+PUSH 5
+XSWAP
+DROP
+//}
+
+LOOP1S1:
+DROP
+INC
+JMP LOOP1
+S04:
+DROP
+DROP
+DROP
+//}
+
+//TransactionOutput[] outputs = ((Transaction)ExecutionEngine.ScriptContainer).GetOutputs();
+SYSCALL System.ExecutionEngine.GetScriptContainer
+SYSCALL AntShares.Transaction.GetOutputs
+
+//foreach (TransactionOutput output in outputs)
+//{
+
+//initialize loop
+DUP
+ARRAYSIZE
+PUSH 0
+
+//exit test
+LOOP2:
+OVER
+OVER
+NUMEQUAL
+JMPIF S05
+
+//set output
+PUSH 2
+PICK
+OVER
+PICKITEM
+
+//if (output.ScriptHash.Equals(ExecutionEngine.EntryScriptHash))
+//{
+DUP
+SYSCALL AntShares.Output.GetScriptHash
+SYSCALL System.ExecutionEngine.GetEntryScriptHash
+EQUAL
+JMPIFNOT LOOP2S1
+
+//if (output.AssetId.Equals(inputId))
+DUP
+SYSCALL AntShares.Output.GetAssetId
+PUSH 7
+PICK
+EQUAL
+JMPIFNOT LOOP2S2
+
+//inputSum -= output.Value;
+PUSH 4
+PICK
+OVER
+SYSCALL AntShares.Output.GetValue
+SUB
+PUSH 5
+XSWAP
+DROP
+JMP LOOP2S1
+
+//else if (output.AssetId.Equals(outputId))
+LOOP2S2:
+DUP
+SYSCALL AntShares.Output.GetAssetId
+PUSH 8
+PICK
+EQUAL
+JMPIFNOT LOOP2S1
+
+//outputSum += output.Value;
+PUSH 5
+PICK
+OVER
+SYSCALL AntShares.Output.GetValue
+ADD
+PUSH 6
+XSWAP
+DROP
+//}
+
+LOOP2S1:
+DROP
+INC
+JMP LOOP2
+S05:
+DROP
+DROP
+DROP
+//}
+
+//if (inputSum <= 0) return true;
+DUP
+PUSH 0
+LTE
+JMPIFNOT S06
+PUSH true
+TOALTSTACK
+JMP CLEAR
+
+//if (way)
+//{
+S06:
+PUSH 4
+ROLL
+JMPIFNOT S07
+
+//if (outputSum * 100000000 < inputSum * price) return false;
+PUSH 4
+ROLL
+MUL
+SWAP
+PUSH 100000000
+MUL
+GT
+JMPIFNOT S08
+PUSH false
+TOALTSTACK
+JMP CLEAR
+//}
+
+//else
+//{
+S07:
+
+//if (inputSum * 100000000 > outputSum * price) return false;
+PUSH 100000000
+MUL
+SWAP
+PUSH 4
+ROLL
+MUL
+GT
+JMPIFNOT S08
+PUSH false
+TOALTSTACK
+JMP CLEAR
+//}
+
+//return true;
+S08:
+DROP
+DROP
+PUSH true
+RET
+
+//clear stack and return
+CLEAR:
+DEPTH
+JMPIFNOT EXIT
+DROP
+JMP CLEAR
+EXIT:
+FROMALTSTACK
+RET
