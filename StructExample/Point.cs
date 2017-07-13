@@ -1,4 +1,4 @@
-﻿namespace AntShares.SmartContract
+﻿namespace Neo.SmartContract
 {
     public struct Point
     {

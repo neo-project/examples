@@ -1,7 +1,7 @@
-﻿using AntShares.SmartContract.Framework;
-using AntShares.SmartContract.Framework.Services.AntShares;
+﻿using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework.Services.Neo;
 
-namespace AntShares.SmartContract
+namespace Neo.SmartContract
 {
     public class Domain : FunctionCode
     {

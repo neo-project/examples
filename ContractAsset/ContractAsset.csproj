@@ -8,7 +8,7 @@
     <ProjectGuid>{743F4206-82CC-4807-9189-AC6B8B64A563}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AntShares.SmartContract</RootNamespace>
+    <RootNamespace>Neo.SmartContract</RootNamespace>
     <AssemblyName>ContractAsset</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntShares.SmartContract.Framework, Version=2.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AntShares.SmartContract.Framework.2.0.0.4\lib\net40\AntShares.SmartContract.Framework.dll</HintPath>
+    <Reference Include="Neo.SmartContract.Framework, Version=2.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Neo.SmartContract.Framework.2.0.0.6\lib\net40\Neo.SmartContract.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,7 +53,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AntShares.ILConvertPlugin.dll" />
+    <Content Include="Neo.ConvertTask.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="Build.tasks" />

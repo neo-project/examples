@@ -36,7 +36,7 @@ PUSH 0
 
 //TransactionOutput[] references = ((Transaction)ExecutionEngine.ScriptContainer).GetReferences();
 SYSCALL System.ExecutionEngine.GetScriptContainer
-SYSCALL AntShares.Transaction.GetReferences
+SYSCALL Neo.Transaction.GetReferences
 
 //foreach (TransactionOutput reference in references)
 //{
@@ -62,14 +62,14 @@ PICKITEM
 //if (reference.ScriptHash.Equals(ExecutionEngine.EntryScriptHash))
 //{
 DUP
-SYSCALL AntShares.Output.GetScriptHash
+SYSCALL Neo.Output.GetScriptHash
 SYSCALL System.ExecutionEngine.GetEntryScriptHash
 EQUAL
 JMPIFNOT LOOP1S1
 
 //if (!reference.AssetId.Equals(inputId))
 DUP
-SYSCALL AntShares.Output.GetAssetId
+SYSCALL Neo.Output.GetAssetId
 PUSH 7
 PICK
 EQUAL
@@ -85,7 +85,7 @@ LOOP1S2:
 
 //inputSum += reference.Value;
 DUP
-SYSCALL AntShares.Output.GetValue
+SYSCALL Neo.Output.GetValue
 PUSH 5
 PICK
 ADD
@@ -106,7 +106,7 @@ DROP
 
 //TransactionOutput[] outputs = ((Transaction)ExecutionEngine.ScriptContainer).GetOutputs();
 SYSCALL System.ExecutionEngine.GetScriptContainer
-SYSCALL AntShares.Transaction.GetOutputs
+SYSCALL Neo.Transaction.GetOutputs
 
 //foreach (TransactionOutput output in outputs)
 //{
@@ -132,14 +132,14 @@ PICKITEM
 //if (output.ScriptHash.Equals(ExecutionEngine.EntryScriptHash))
 //{
 DUP
-SYSCALL AntShares.Output.GetScriptHash
+SYSCALL Neo.Output.GetScriptHash
 SYSCALL System.ExecutionEngine.GetEntryScriptHash
 EQUAL
 JMPIFNOT LOOP2S1
 
 //if (output.AssetId.Equals(inputId))
 DUP
-SYSCALL AntShares.Output.GetAssetId
+SYSCALL Neo.Output.GetAssetId
 PUSH 7
 PICK
 EQUAL
@@ -149,7 +149,7 @@ JMPIFNOT LOOP2S2
 PUSH 4
 PICK
 OVER
-SYSCALL AntShares.Output.GetValue
+SYSCALL Neo.Output.GetValue
 SUB
 PUSH 5
 XSWAP
@@ -159,7 +159,7 @@ JMP LOOP2S1
 //else if (output.AssetId.Equals(outputId))
 LOOP2S2:
 DUP
-SYSCALL AntShares.Output.GetAssetId
+SYSCALL Neo.Output.GetAssetId
 PUSH 8
 PICK
 EQUAL
@@ -169,7 +169,7 @@ JMPIFNOT LOOP2S1
 PUSH 5
 PICK
 OVER
-SYSCALL AntShares.Output.GetValue
+SYSCALL Neo.Output.GetValue
 ADD
 PUSH 6
 XSWAP

@@ -1,9 +1,9 @@
-﻿using AntShares.SmartContract.Framework;
-using AntShares.SmartContract.Framework.Services.AntShares;
-using AntShares.SmartContract.Framework.Services.System;
+﻿using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework.Services.Neo;
+using Neo.SmartContract.Framework.Services.System;
 using System.Numerics;
 
-namespace AntShares.SmartContract
+namespace Neo.SmartContract
 {
     public class AgencyTransaction : FunctionCode
     {

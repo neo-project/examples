@@ -1,6 +1,6 @@
-﻿using AntShares.SmartContract.Framework;
+﻿using Neo.SmartContract.Framework;
 
-namespace AntShares.SmartContract
+namespace Neo.SmartContract
 {
     public class StructExample : FunctionCode
     {
