@@ -24,6 +24,16 @@ namespace Neo.SmartContract
         private const int ico_start_time = 1502726400;
         private const int ico_end_time = 1503936000;
 
+        //Useful constants
+        private const uint daySeconds = 86400;
+        private const uint threeDaySeconds = daySeconds * 3;
+        private const uint weekSeconds = daySeconds * 7;
+        private const uint witnessLength = 20;
+        private const uint sigLength = 33;
+        private const ulong dayRate = 130;
+        private const ulong threeDayRate = 120;
+        private const ulong weekRate = 110;
+
         [DisplayName("transfer")]
         public static event Action<byte[], byte[], BigInteger> Transferred;
 
@@ -34,11 +44,11 @@ namespace Neo.SmartContract
         {
             if (Runtime.Trigger == TriggerType.Verification)
             {
-                if (Owner.Length == 20)
+                if (Owner.Length == witnessLength)
                 {
                     return Runtime.CheckWitness(Owner);
                 }
-                else if (Owner.Length == 33)
+                else if (Owner.Length == sigLength)
                 {
                     byte[] signature = operation.AsByteArray();
                     return VerifySignature(Owner, signature);
@@ -118,7 +128,7 @@ namespace Neo.SmartContract
             }
             // crowdfunding success
             // 众筹成功
-            ulong token = value * swap_rate / 100000000;
+            ulong token = value * swap_rate / factor;
             BigInteger balance = Storage.Get(Storage.CurrentContext, sender).AsBigInteger();
             Storage.Put(Storage.CurrentContext, sender, token + balance);
             BigInteger totalSupply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
@@ -172,17 +182,17 @@ namespace Neo.SmartContract
             {
                 return 0;
             }
-            else if (time < 86400)
+            else if (time < daySeconds)
             {
-                return basic_rate * 130 / 100;
+                return basic_rate * dayRate / 100;
             }
-            else if (time < 259200)
+            else if (time < threeDaySeconds)
             {
-                return basic_rate * 120 / 100;
+                return basic_rate * threeDayRate / 100;
             }
-            else if (time < 604800)
+            else if (time < weekSeconds)
             {
-                return basic_rate * 110 / 100;
+                return basic_rate * weekRate / 100;
             }
             else if (time < ico_duration)
             {
