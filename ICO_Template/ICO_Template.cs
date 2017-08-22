@@ -78,6 +78,7 @@ namespace Neo.SmartContract
             if (total_supply.Length != 0) return false;
             Storage.Put(Storage.CurrentContext, Owner, pre_ico_cap);
             Storage.Put(Storage.CurrentContext, "totalSupply", pre_ico_cap);
+            Transferred(null, Owner, pre_ico_cap);
             return true;
         }
 
@@ -123,6 +124,7 @@ namespace Neo.SmartContract
             Storage.Put(Storage.CurrentContext, sender, token + balance);
             BigInteger totalSupply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
             Storage.Put(Storage.CurrentContext, "totalSupply", token + totalSupply);
+            Transferred(null, sender, token);
             return true;
         }
 
