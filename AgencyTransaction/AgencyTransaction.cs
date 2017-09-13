@@ -1,16 +1,15 @@
-﻿using Neo.SmartContract.Framework;
-using Neo.SmartContract.Framework.Services.Neo;
+﻿using Neo.SmartContract.Framework.Services.Neo;
 using Neo.SmartContract.Framework.Services.System;
 using System.Numerics;
 
 namespace Neo.SmartContract
 {
-    public class AgencyTransaction : FunctionCode
+    public class AgencyTransaction : Framework.SmartContract
     {
         public static bool Main(byte[] agent, byte[] assetId, byte[] valueId, byte[] client, bool way, BigInteger price, byte[] signature)
         {
-            if (VerifySignature(client, signature)) return true;
-            if (!VerifySignature(agent, signature)) return false;
+            if (VerifySignature(signature, client)) return true;
+            if (!VerifySignature(signature, agent)) return false;
             byte[] inputId, outputId;
             if (way)
             {

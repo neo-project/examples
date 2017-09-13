@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace Neo.SmartContract
 {
-    public class ICO_Template : FunctionCode
+    public class ICO_Template : Framework.SmartContract
     {
         //Token Settings
         public static string Name() => "name of the token";
@@ -41,7 +41,7 @@ namespace Neo.SmartContract
                 else if (Owner.Length == 33)
                 {
                     byte[] signature = operation.AsByteArray();
-                    return VerifySignature(Owner, signature);
+                    return VerifySignature(signature, Owner);
                 }
             }
             else if (Runtime.Trigger == TriggerType.Application)
@@ -141,6 +141,7 @@ namespace Neo.SmartContract
         {
             if (value <= 0) return false;
             if (!Runtime.CheckWitness(from)) return false;
+            if (from == to) return true;
             BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
             if (from_value < value) return false;
             if (from_value == value)

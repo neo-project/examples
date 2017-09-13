@@ -1,8 +1,6 @@
-﻿using Neo.SmartContract.Framework;
-
-namespace Neo.SmartContract
+﻿namespace Neo.SmartContract
 {
-    public class StructExample : FunctionCode
+    public class StructExample : Framework.SmartContract
     {
         public static Point Add(Point a, Point b)
         {

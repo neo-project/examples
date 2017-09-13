@@ -1,9 +1,8 @@
-﻿using Neo.SmartContract.Framework;
-using Neo.SmartContract.Framework.Services.Neo;
+﻿using Neo.SmartContract.Framework.Services.Neo;
 
 namespace Neo.SmartContract
 {
-    public class HelloWorld : FunctionCode
+    public class HelloWorld : Framework.SmartContract
     {
         public static void Main()
         {
