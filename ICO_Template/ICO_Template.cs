@@ -16,10 +16,12 @@ namespace Neo.SmartContract
             2, 133, 234, 182, 95, 74, 1, 38, 228, 184, 91, 78, 93, 139, 126, 48, 58, 255, 126, 251, 54, 13, 89, 95, 46, 49, 137, 187, 144, 72, 122, 213, 170 };
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
+        private const ulong basic_rate = 1000 * factor;
 
         //ICO Settings
         private static readonly byte[] neo_asset_id = { 197, 111, 51, 252, 110, 207, 205, 12, 34, 92, 74, 179, 86, 254, 229, 147, 144, 175, 133, 96, 190, 14, 147, 15, 174, 190, 116, 166, 218, 255, 124, 155 };
-        private const ulong total_amount = 100000000 * factor;
+        private const ulong neo_decimals = 100000000;
+        private const ulong total_amount = 10000000 * neo_decimals; // invest neo cap
         private const ulong pre_ico_cap = 0 * factor;
         private const int ico_start_time = 1502726400;
         private const int ico_end_time = 1503936000;
@@ -110,16 +112,24 @@ namespace Neo.SmartContract
             // the current exchange rate between ico tokens and neo during the token swap period
             // 获取众筹期间ico token和neo间的转化率
             ulong swap_rate = CurrentSwapRate();
-            // crowdfunding failure
-            // 众筹失败
             if (swap_rate == 0)
             {
                 Refund(sender, value);
                 return false;
             }
+
+            // check whether over invest cap
+            // 检查是否超过投资上线
+            value = InvestCap(sender, value);
+            if (value == 0)
+            {
+                Refund(sender, value);
+                return false;
+            }
+
             // crowdfunding success
             // 众筹成功
-            ulong token = value * swap_rate / 100000000;
+            ulong token = value * swap_rate / neo_decimals;
             BigInteger balance = Storage.Get(Storage.CurrentContext, sender).AsBigInteger();
             Storage.Put(Storage.CurrentContext, sender, token + balance);
             BigInteger totalSupply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
@@ -165,10 +175,7 @@ namespace Neo.SmartContract
         // between ico tokens and neo during the token swap period
         private static ulong CurrentSwapRate()
         {
-            const ulong basic_rate = 1000 * factor;
             const int ico_duration = ico_end_time - ico_start_time;
-            BigInteger total_supply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
-            if (total_supply >= total_amount) return 0;
             uint now = Blockchain.GetHeader(Blockchain.GetHeight()).Timestamp;
             int time = (int)now - ico_start_time;
             if (time < 0)
@@ -195,6 +202,30 @@ namespace Neo.SmartContract
             {
                 return 0;
             }
+        }
+
+        // check whether over invest cap
+        // 检查是否超过投资上线
+        private static ulong InvestCap(byte[] sender, ulong value)
+        {
+            BigInteger ico_neo = Storage.Get(Storage.CurrentContext, "icoNeo").AsBigInteger();
+            BigInteger balance_neo = total_amount - ico_neo;
+            if (balance_neo <= 0)
+            {
+                return 0;
+            }
+            else if (balance_neo <= value)
+            {
+                Refund(sender, value - balance_neo);
+                ico_neo += balance_neo;
+                value = (ulong)balance_neo;
+            }
+            else
+            {
+                ico_neo += value;
+            }
+            Storage.Put(Storage.CurrentContext, "icoNeo", ico_neo);
+            return value;
         }
     }
 }
