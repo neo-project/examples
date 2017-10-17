@@ -37,12 +37,14 @@ namespace Neo.SmartContract
             {
                 if (Owner.Length == 20)
                 {
+                    // if param Owner is script hash
                     return Runtime.CheckWitness(Owner);
                 }
                 else if (Owner.Length == 33)
                 {
+                    // if param Owner is public key
                     byte[] signature = operation.AsByteArray();
-                    return VerifySignature(Owner, signature);
+                    return VerifySignature(signature, Owner);
                 }
             }
             else if (Runtime.Trigger == TriggerType.Application)
@@ -231,7 +233,7 @@ namespace Neo.SmartContract
             // 获取转入智能合约地址的Neo总量
             foreach (TransactionOutput output in outputs)
             {
-                if (output.ScriptHash == GetReceiver())
+                if (output.ScriptHash == GetReceiver() && output.AssetId == neo_asset_id)
                 {
                     value += (ulong)output.Value;
                 }
