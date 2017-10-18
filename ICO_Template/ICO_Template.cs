@@ -1,4 +1,4 @@
-﻿using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
 using Neo.SmartContract.Framework.Services.System;
 using System;
@@ -125,8 +125,16 @@ namespace Neo.SmartContract
             // crowdfunding success
             // 众筹成功
             BigInteger balance = Storage.Get(Storage.CurrentContext, sender).AsBigInteger();
-            Storage.Put(Storage.CurrentContext, sender, token + balance);
             BigInteger totalSupply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
+
+            if (totalSupply + token > total_amount)
+            {
+                //This will take us over the limit, reject
+                Refund(sender, value);
+                return false;
+            }
+
+            Storage.Put(Storage.CurrentContext, sender, token + balance);
             Storage.Put(Storage.CurrentContext, "totalSupply", token + totalSupply);
             Transferred(null, sender, token);
             return true;
