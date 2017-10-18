@@ -12,17 +12,18 @@ namespace Neo.SmartContract
         //Token Settings
         public static string Name() => "name of the token";
         public static string Symbol() => "SymbolOfTheToken";
-        public static readonly byte[] Owner = { //public key or script hash
-            2, 133, 234, 182, 95, 74, 1, 38, 228, 184, 91, 78, 93, 139, 126, 48, 58, 255, 126, 251, 54, 13, 89, 95, 46, 49, 137, 187, 144, 72, 122, 213, 170 };
+        public static readonly byte[] Owner = { 47, 60, 170, 33, 216, 40, 148, 2, 242, 150, 9, 84, 154, 50, 237, 160, 97, 90, 55, 183 };
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
+        private const ulong neo_decimals = 100000000;
 
         //ICO Settings
-        private static readonly byte[] neo_asset_id = { 197, 111, 51, 252, 110, 207, 205, 12, 34, 92, 74, 179, 86, 254, 229, 147, 144, 175, 133, 96, 190, 14, 147, 15, 174, 190, 116, 166, 218, 255, 124, 155 };
-        private const ulong total_amount = 100000000 * factor;
-        private const ulong pre_ico_cap = 0 * factor;
-        private const int ico_start_time = 1502726400;
-        private const int ico_end_time = 1503936000;
+        private static readonly byte[] neo_asset_id = { 155, 124, 255, 218, 166, 116, 190, 174, 15, 147, 14, 190, 96, 133, 175, 144, 147, 229, 254, 86, 179, 74, 92, 34, 12, 205, 207, 110, 252, 51, 111, 197 };
+        private const ulong total_amount = 100000000 * factor; // total token amount
+        private const ulong pre_ico_cap = 30000000 * factor; // pre ico token amount
+        private const ulong basic_rate = 1000 * factor;
+        private const int ico_start_time = 1506787200;
+        private const int ico_end_time = 1538323200;
 
         [DisplayName("transfer")]
         public static event Action<byte[], byte[], BigInteger> Transferred;
@@ -36,10 +37,12 @@ namespace Neo.SmartContract
             {
                 if (Owner.Length == 20)
                 {
+                    // if param Owner is script hash
                     return Runtime.CheckWitness(Owner);
                 }
                 else if (Owner.Length == 33)
                 {
+                    // if param Owner is public key
                     byte[] signature = operation.AsByteArray();
                     return VerifySignature(signature, Owner);
                 }
@@ -67,6 +70,13 @@ namespace Neo.SmartContract
                 }
                 if (operation == "decimals") return Decimals();
             }
+            //you can choice refund or not refund
+            byte[] sender = GetSender();
+            ulong contribute_value = GetContributeValue();
+            if (contribute_value > 0 && sender.Length != 0)
+            {
+                Refund(sender, contribute_value);
+            }
             return false;
         }
 
@@ -89,24 +99,13 @@ namespace Neo.SmartContract
         // 将众筹的neo转化为等价的ico代币
         public static bool MintTokens()
         {
-            Transaction tx = (Transaction)ExecutionEngine.ScriptContainer;
-            TransactionOutput reference = tx.GetReferences()[0];
-            // check whether asset is neo
-            // 检查资产是否为neo
-            if (reference.AssetId != neo_asset_id) return false;
-            byte[] sender = reference.ScriptHash;
-            TransactionOutput[] outputs = tx.GetOutputs();
-            byte[] receiver = ExecutionEngine.ExecutingScriptHash;
-            ulong value = 0;
-            // get the total amount of Neo
-            // 获取转入智能合约地址的Neo总量
-            foreach (TransactionOutput output in outputs)
+            byte[] sender = GetSender();
+            // contribute asset is not neo
+            if (sender.Length == 0)
             {
-                if (output.ScriptHash == receiver)
-                {
-                    value += (ulong)output.Value;
-                }
+                return false;
             }
+            ulong contribute_value = GetContributeValue();
             // the current exchange rate between ico tokens and neo during the token swap period
             // 获取众筹期间ico token和neo间的转化率
             ulong swap_rate = CurrentSwapRate();
@@ -114,12 +113,17 @@ namespace Neo.SmartContract
             // 众筹失败
             if (swap_rate == 0)
             {
-                Refund(sender, value);
+                Refund(sender, contribute_value);
+                return false;
+            }
+            // you can get current swap token amount
+            ulong token = CurrentSwapToken(sender, contribute_value, swap_rate);
+            if (token == 0)
+            {
                 return false;
             }
             // crowdfunding success
             // 众筹成功
-            ulong token = value * swap_rate / 100000000;
             BigInteger balance = Storage.Get(Storage.CurrentContext, sender).AsBigInteger();
             Storage.Put(Storage.CurrentContext, sender, token + balance);
             BigInteger totalSupply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
@@ -165,27 +169,12 @@ namespace Neo.SmartContract
         // between ico tokens and neo during the token swap period
         private static ulong CurrentSwapRate()
         {
-            const ulong basic_rate = 1000 * factor;
             const int ico_duration = ico_end_time - ico_start_time;
-            BigInteger total_supply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
-            if (total_supply >= total_amount) return 0;
-            uint now = Blockchain.GetHeader(Blockchain.GetHeight()).Timestamp;
+            uint now = Blockchain.GetHeader(Blockchain.GetHeight()).Timestamp + 15;
             int time = (int)now - ico_start_time;
             if (time < 0)
             {
                 return 0;
-            }
-            else if (time < 86400)
-            {
-                return basic_rate * 130 / 100;
-            }
-            else if (time < 259200)
-            {
-                return basic_rate * 120 / 100;
-            }
-            else if (time < 604800)
-            {
-                return basic_rate * 110 / 100;
             }
             else if (time < ico_duration)
             {
@@ -195,6 +184,62 @@ namespace Neo.SmartContract
             {
                 return 0;
             }
+        }
+
+        //whether over contribute capacity, you can get the token amount
+        private static ulong CurrentSwapToken(byte[] sender, ulong value, ulong swap_rate)
+        {
+            ulong token = value / neo_decimals * swap_rate;
+            BigInteger total_supply = Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
+            BigInteger balance_token = total_amount - total_supply;
+            if (balance_token <= 0)
+            {
+                Refund(sender, value);
+                return 0;
+            }
+            else if (balance_token < token)
+            {
+                Refund(sender, (token - balance_token) / swap_rate * neo_decimals);
+                token = (ulong)balance_token;
+            }
+            return token;
+        }
+
+        // check whether asset is neo and get sender script hash
+        private static byte[] GetSender()
+        {
+            Transaction tx = (Transaction)ExecutionEngine.ScriptContainer;
+            TransactionOutput[] reference = tx.GetReferences();
+            // you can choice refund or not refund
+            foreach (TransactionOutput output in reference)
+            {
+                if (output.AssetId == neo_asset_id) return output.ScriptHash;
+            }
+            return new byte[0];
+        }
+
+        // get smart contract script hash
+        private static byte[] GetReceiver()
+        {
+            return ExecutionEngine.ExecutingScriptHash;
+        }
+
+        // get all you contribute neo amount
+        private static ulong GetContributeValue()
+        {
+            Transaction tx = (Transaction)ExecutionEngine.ScriptContainer;
+            TransactionOutput[] outputs = tx.GetOutputs();
+            ulong value = 0;
+            // get the total amount of Neo
+            // 获取转入智能合约地址的Neo总量
+            foreach (TransactionOutput output in outputs)
+            {
+                if (output.ScriptHash == GetReceiver() && output.AssetId == neo_asset_id)
+                {
+                    value += (ulong)output.Value;
+                }
+            }
+            return value;
         }
     }
 }
