@@ -31,6 +31,9 @@ namespace Neo.SmartContract
         [DisplayName("refund")]
         public static event Action<byte[], BigInteger> Refund;
 
+        [DisplayName("approve")]
+        public static event Action<byte[], byte[], BigInteger> Approved;
+
         public static Object Main(string operation, params object[] args)
         {
             if (Runtime.Trigger == TriggerType.Verification)
@@ -69,6 +72,31 @@ namespace Neo.SmartContract
                     return BalanceOf(account);
                 }
                 if (operation == "decimals") return Decimals();
+
+                // NEP 5.1
+                if( operation == "allowance")
+                {
+                    byte[] from = (byte[])args[0];
+                    byte[] to = (byte[])args[1];
+                    return Allowance(from, to);
+                }
+
+                if( operation == "approve")
+                {
+                    byte[] from = (byte[])args[0];
+                    byte[] to = (byte[])args[1];
+                    BigInteger value = (BigInteger)args[2];
+                    return Approve(from, to, value);
+                }
+
+                if( operation == "transferFrom")
+                {
+                    byte[] from = (byte[])args[0];
+                    byte[] to = (byte[])args[1];
+                    BigInteger value = (BigInteger)args[2];
+                    return TransferFrom(from, to, value);
+                }
+
             }
             //you can choice refund or not refund
             byte[] sender = GetSender();
@@ -157,6 +185,72 @@ namespace Neo.SmartContract
             Transferred(from, to, value);
             return true;
         }
+
+        // Transfers tokens from the 'from' address to the 'to' address
+        // if the 'to' address has been given an allowance to use on behalf of the 'from' address
+        public static bool TransferFrom(byte[] from, byte [] to, BigInteger value) 
+        {
+            if (value <= 0) return false;
+            if (from == to) return true;
+
+            BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
+            if (from_value < value) return false;
+
+            byte[] allowance_key = from.Concat(to);
+
+            BigInteger allowance = Storage.Get(Storage.CurrentContext, allowance_key).AsBigInteger();
+
+            if (allowance < value) return false;
+
+            if (from_value == value)
+                Storage.Delete(Storage.CurrentContext, from);
+            else
+                Storage.Put(Storage.CurrentContext, from, from_value - value);
+
+            BigInteger to_value = Storage.Get(Storage.CurrentContext, to).AsBigInteger();
+            Storage.Put(Storage.CurrentContext, to, to_value + value);
+
+            if (allowance == value)
+                Storage.Delete(Storage.CurrentContext, allowance_key);
+            else
+                Storage.Put(Storage.CurrentContext, allowance_key, allowance - value);
+
+            Transferred(from, to, value);
+
+            return true;
+        }
+
+        // Gives approval to the 'to' address to use amount of tokens from the 'from' address
+        // This does not guarantee that the funds will be available later to be used by the
+        // 'to' address
+        public static bool Approve(byte[] from, byte[] to, BigInteger value)
+        {
+            if (value <= 0) return false;
+            if (!Runtime.CheckWitness(from)) return false;
+            if (from == to) return false;
+            BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
+            if (from_value < value) return false;
+
+            byte[] allowance_key = from.Concat(to);
+
+            BigInteger current_approved_amount = Storage.Get(Storage.CurrentContext, allowance_key).AsBigInteger();
+
+            BigInteger new_approved_amount = current_approved_amount + value;
+
+            Storage.Put(Storage.CurrentContext, allowance_key, new_approved_amount);
+
+            Approved(from, to, current_approved_amount);
+
+            return true;   
+        }
+
+        // Gets the amount of tokens allowed by 'from' address to be used by 'to' address
+        public static BigInteger Allowance(byte[] from, byte[] to)
+        {
+            byte[] allowance_key = from.Concat(to);
+            return Storage.Get(Storage.CurrentContext, allowance_key).AsBigInteger();
+        }
+
 
         // get the account balance of another account with address
         // 根据地址获取token的余额
