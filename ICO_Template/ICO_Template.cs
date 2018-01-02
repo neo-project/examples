@@ -73,7 +73,7 @@ namespace Neo.SmartContract
                 }
                 if (operation == "decimals") return Decimals();
 
-                // NEP 5.1
+                // NEP-5 optional methods
                 if( operation == "allowance")
                 {
                     byte[] from = (byte[])args[0];
