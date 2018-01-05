@@ -12,7 +12,7 @@ namespace Neo.SmartContract
         //Token Settings
         public static string Name() => "name of the token";
         public static string Symbol() => "SymbolOfTheToken";
-        public static readonly byte[] Owner = { 47, 60, 170, 33, 216, 40, 148, 2, 242, 150, 9, 84, 154, 50, 237, 160, 97, 90, 55, 183 };
+        public static readonly byte[] Owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
         private const ulong neo_decimals = 100000000;
@@ -170,7 +170,7 @@ namespace Neo.SmartContract
         private static ulong CurrentSwapRate()
         {
             const int ico_duration = ico_end_time - ico_start_time;
-            uint now = Blockchain.GetHeader(Blockchain.GetHeight()).Timestamp + 15;
+            uint now = Runtime.Time;
             int time = (int)now - ico_start_time;
             if (time < 0)
             {
