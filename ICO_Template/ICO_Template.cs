@@ -12,7 +12,7 @@ namespace Neo.SmartContract
         //Token Settings
         public static string Name() => "name of the token";
         public static string Symbol() => "SymbolOfTheToken";
-        public static readonly byte[] Owner = Helper.ToScriptHash("ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr");
+        public static readonly byte[] Owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
         private const ulong neo_decimals = 100000000;
