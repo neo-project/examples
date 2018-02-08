@@ -215,7 +215,7 @@ namespace Neo.SmartContract
             {
                 if (output.AssetId == neo_asset_id) return output.ScriptHash;
             }
-            return new byte[0];
+            return new byte[]{};
         }
 
         // get smart contract script hash
