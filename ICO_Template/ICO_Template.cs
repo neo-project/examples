@@ -145,7 +145,7 @@ namespace Neo.SmartContract
         {
             if (value <= 0) return false;
             if (!Runtime.CheckWitness(from)) return false;
-            if (to.Length == 20) return false;
+            if (to.Length != 20) return false;
             
             BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
             if (from_value < value) return false;
