@@ -8,7 +8,7 @@ namespace Neo.SmartContract
         public static void Main()
         {
             // Simple Map
-            Map<string, int> m = new Map<string,int>();
+            Map<string, int> m = new Map<string, int>();
             m["hello"] = 10;
             m["world"] = 15;
             Runtime.Notify(m["hello"]); // will print '10'
