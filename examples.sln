@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICO_Template", "ICO_Templat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapExample", "MapExample\MapExample.csproj", "{00974722-3492-4514-9712-9A7D091A1D24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventExample", "EventExample\EventExample.csproj", "{63CECEA1-2506-4FDE-BFE2-EA89F75FBF7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{00974722-3492-4514-9712-9A7D091A1D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00974722-3492-4514-9712-9A7D091A1D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00974722-3492-4514-9712-9A7D091A1D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63CECEA1-2506-4FDE-BFE2-EA89F75FBF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CECEA1-2506-4FDE-BFE2-EA89F75FBF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CECEA1-2506-4FDE-BFE2-EA89F75FBF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CECEA1-2506-4FDE-BFE2-EA89F75FBF7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
