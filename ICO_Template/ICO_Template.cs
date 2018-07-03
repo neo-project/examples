@@ -10,9 +10,12 @@ namespace Neo.SmartContract
     public class ICO_Template : Framework.SmartContract
     {
         //Token Settings
+        [DisplayName("name")]
         public static string Name() => "name of the token";
+        [DisplayName("symbol")]
         public static string Symbol() => "SymbolOfTheToken";
         public static readonly byte[] Owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
+        [DisplayName("decimals")]
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
         private const ulong neo_decimals = 100000000;
@@ -82,6 +85,7 @@ namespace Neo.SmartContract
 
         // initialization parameters, only once
         // 初始化参数
+        [DisplayName("deploy")]
         public static bool Deploy()
         {
             byte[] total_supply = Storage.Get(Storage.CurrentContext, "totalSupply");
@@ -97,6 +101,7 @@ namespace Neo.SmartContract
         // amount of neo sent to the wallet contract. The function
         // can only be called during the tokenswap period
         // 将众筹的neo转化为等价的ico代币
+       [DisplayName("mintTokens")]
         public static bool MintTokens()
         {
             byte[] sender = GetSender();
@@ -134,6 +139,7 @@ namespace Neo.SmartContract
 
         // get the total token supply
         // 获取已发行token总量
+        [DisplayName("totalSupply")]
         public static BigInteger TotalSupply()
         {
             return Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
@@ -141,12 +147,13 @@ namespace Neo.SmartContract
 
         // function that is always called when someone wants to transfer tokens.
         // 流转token调用
+        [DisplayName("transfer")]
         public static bool Transfer(byte[] from, byte[] to, BigInteger value)
         {
             if (value <= 0) return false;
             if (!Runtime.CheckWitness(from)) return false;
             if (to.Length != 20) return false;
-            
+
             BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
             if (from_value < value) return false;
             if (from == to) return true;
@@ -162,6 +169,7 @@ namespace Neo.SmartContract
 
         // get the account balance of another account with address
         // 根据地址获取token的余额
+        [DisplayName("balanceOf")]
         public static BigInteger BalanceOf(byte[] address)
         {
             return Storage.Get(Storage.CurrentContext, address).AsBigInteger();
