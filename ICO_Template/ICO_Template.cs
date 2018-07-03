@@ -10,9 +10,12 @@ namespace Neo.SmartContract
     public class ICO_Template : Framework.SmartContract
     {
         //Token Settings
+        [DisplayName("name")]
         public static string Name() => "name of the token";
+        [DisplayName("symbol")]
         public static string Symbol() => "SymbolOfTheToken";
         public static readonly byte[] Owner = "ATrzHaicmhRj15C3Vv6e6gLfLqhSD2PtTr".ToScriptHash();
+        [DisplayName("decimals")]
         public static byte Decimals() => 8;
         private const ulong factor = 100000000; //decided by Decimals()
         private const ulong neo_decimals = 100000000;
@@ -136,7 +139,7 @@ namespace Neo.SmartContract
 
         // get the total token supply
         // 获取已发行token总量
-        [DisplayName("totalSuppl")]
+        [DisplayName("totalSupply")]
         public static BigInteger TotalSupply()
         {
             return Storage.Get(Storage.CurrentContext, "totalSupply").AsBigInteger();
@@ -150,7 +153,7 @@ namespace Neo.SmartContract
             if (value <= 0) return false;
             if (!Runtime.CheckWitness(from)) return false;
             if (to.Length != 20) return false;
-            
+
             BigInteger from_value = Storage.Get(Storage.CurrentContext, from).AsBigInteger();
             if (from_value < value) return false;
             if (from == to) return true;
