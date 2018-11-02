@@ -1,6 +1,6 @@
 ﻿//public static bool Main(byte[] agent, byte[] assetId, byte[] valueId, byte[] client, bool way, BigInteger price, byte[] signature)
 
-//if (VerifySignature(client, signature)) return true;
+//if (VerifySignature(signature, client)) return true;
 PUSH 6
 PICK
 PUSH 4
@@ -11,7 +11,7 @@ PUSH true
 TOALTSTACK
 JMP CLEAR
 
-//if (!VerifySignature(agent, signature)) return false;
+//if (!VerifySignature(signature, agent)) return false;
 S01:
 PUSH 5
 ROLL

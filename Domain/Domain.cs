@@ -1,9 +1,8 @@
-﻿using Neo.SmartContract.Framework;
-using Neo.SmartContract.Framework.Services.Neo;
+﻿using Neo.SmartContract.Framework.Services.Neo;
 
 namespace Neo.SmartContract
 {
-    public class Domain : FunctionCode
+    public class Domain : Framework.SmartContract
     {
         public static object Main(string operation, params object[] args)
         {
