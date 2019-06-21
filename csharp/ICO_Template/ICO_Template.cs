@@ -31,7 +31,7 @@ namespace Neo.SmartContract
         [DisplayName("refund")]
         public static event Action<byte[], BigInteger> Refund;
 
-        public static Object Main(string operation, params object[] args)
+        public static Object Main(string operation, object[] args)
         {
             if (Runtime.Trigger == TriggerType.Verification)
             {
