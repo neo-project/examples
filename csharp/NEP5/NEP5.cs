@@ -13,7 +13,6 @@ namespace NEP5
         public static event Action<byte[], byte[], BigInteger> Transferred;
 
         private static readonly byte[] Owner = "Ae2d6qj91YL3LVUMkza7WQsaTYjzjHm4z1".ToScriptHash(); //Owner Address
-        private static readonly byte[] callingscript = ExecutionEngine.CallingScriptHash;
 
         public static BigInteger BalanceOf(byte[] account)
         {
@@ -46,7 +45,7 @@ namespace NEP5
                 throw new InvalidOperationException("The parameter amount MUST be greater than 0.");
             if (Blockchain.GetContract(to)?.IsPayable == false)
                 return false;
-            if (from != callingscript && !Runtime.CheckWitness(from))
+            if (from != ExecutionEngine.CallingScriptHash && !Runtime.CheckWitness(from))
                 return false;
 
             StorageContext context = Storage.CurrentContext;
