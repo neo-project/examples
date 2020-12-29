@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEP5", "NEP5.csproj", "{2712642F-46ED-47B6-95D9-FB2567BFA2F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NEP17", "NEP17.csproj", "{8FBE87C6-6A8A-4650-A668-4B7C4A20D5D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2712642F-46ED-47B6-95D9-FB2567BFA2F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2712642F-46ED-47B6-95D9-FB2567BFA2F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2712642F-46ED-47B6-95D9-FB2567BFA2F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2712642F-46ED-47B6-95D9-FB2567BFA2F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FBE87C6-6A8A-4650-A668-4B7C4A20D5D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBE87C6-6A8A-4650-A668-4B7C4A20D5D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBE87C6-6A8A-4650-A668-4B7C4A20D5D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBE87C6-6A8A-4650-A668-4B7C4A20D5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7D56C83B-01F9-41F0-A703-8DAAF03DC1A8}
+		SolutionGuid = {E0C52AFF-CFA9-4816-A825-F5A03BD2F2B2}
 	EndGlobalSection
 EndGlobal

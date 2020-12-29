@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Neo.SmartContract.Framework" Version="3.0.0-preview4" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Message Text="Start NeoContract converter, Source File: $(TargetPath)" Importance="high">
+    </Message>
+    <Exec Command="neon -f &quot;$(TargetPath)&quot; -o" />
+  </Target>
+
+</Project>
