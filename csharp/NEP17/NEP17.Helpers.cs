@@ -7,6 +7,6 @@ namespace Template.NEP17.CSharp
     public partial class NEP17 : SmartContract
     {
         private static bool ValidateAddress(UInt160 address) => address.IsValid && !address.IsZero;
-        private static bool IsDeployed(UInt160 address) => ManagementContract.GetContract(address) != null;
+        private static bool IsDeployed(UInt160 address) => ContractManagement.GetContract(address) != null;
     }
 }
