@@ -4,16 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Neo.SmartContract.Framework" Version="3.0.0-preview4" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Message Text="Start NeoContract converter, Source File: $(TargetPath)" Importance="high">
     </Message>
     <Exec Command="neon -f &quot;$(TargetPath)&quot; -o" />
   </Target>
-
-  <ItemGroup>
-    <Reference Include="Neo.SmartContract.Framework">
-      <HintPath>Neo.SmartContract.Framework.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 
 </Project>
