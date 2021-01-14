@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Numerics;
 
-namespace Oracle
+namespace OracleContract
 {
     [DisplayName("Oracle Demo")]
     [ManifestExtra("Author", "Neo")]

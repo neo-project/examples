@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>OracleContract</RootNamespace>
+    <AssemblyName>OracleContract</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
