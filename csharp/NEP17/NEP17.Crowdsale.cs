@@ -9,7 +9,7 @@ namespace Template.NEP17.CSharp
 {
     public partial class NEP17 : SmartContract
     {
-        public static void OnPayment(UInt160 from, BigInteger amount, object data)
+        public static void OnNEP17Payment(UInt160 from, BigInteger amount, object data)
         {
             if (AssetStorage.GetPaymentStatus())
             {

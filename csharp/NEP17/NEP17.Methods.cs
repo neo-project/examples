@@ -32,7 +32,7 @@ namespace Template.NEP17.CSharp
             OnTransfer(from, to, amount);
 
             // Validate payable
-            if (IsDeployed(to)) Contract.Call(to, "onPayment", CallFlags.ReadOnly, new object[] { from, amount, data });
+            if (IsDeployed(to)) Contract.Call(to, "onNEP17Payment", CallFlags.ReadOnly, new object[] { from, amount, data });
             return true;
         }
     }
