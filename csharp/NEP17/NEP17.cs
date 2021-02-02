@@ -10,7 +10,7 @@ namespace Template.NEP17.CSharp
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
-    [SupportedStandards("NEP17", "NEP10")]
+    [SupportedStandards("NEP17")]
     public partial class NEP17 : SmartContract
     {
         #region Token Settings
