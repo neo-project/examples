@@ -11,9 +11,9 @@ namespace Template.NEP17.CSharp
 
         public static void Increase(UInt160 key, BigInteger value) => Put(key, Get(key) + value);
 
-        public static void Enable() => Storage.CurrentContext.CreateMap(mapName).Put("enable".ToByteArray(), 1);
+        public static void Enable() => Storage.CurrentContext.CreateMap(mapName).Put("enable", 1);
 
-        public static void Disable() => Storage.CurrentContext.CreateMap(mapName).Put("enable".ToByteArray(), 0);
+        public static void Disable() => Storage.CurrentContext.CreateMap(mapName).Put("enable", 0);
 
         public static void Reduce(UInt160 key, BigInteger value)
         {
@@ -24,15 +24,15 @@ namespace Template.NEP17.CSharp
                 Put(key, oldValue - value);
         }
 
-        public static void Put(UInt160 key, BigInteger value) => Storage.CurrentContext.CreateMap(mapName).Put((byte[])key, value);
+        public static void Put(UInt160 key, BigInteger value) => Storage.CurrentContext.CreateMap(mapName).Put(key, value);
 
-        public static BigInteger Get(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Get((byte[])key).ToBigInteger();
+        public static BigInteger Get(UInt160 key) => (BigInteger)Storage.CurrentContext.CreateMap(mapName).Get(key);
 
         public static bool GetPaymentStatus()
         {
-            return Storage.CurrentContext.CreateMap(mapName).Get("enable").ToBigInteger().Equals(1);
+            return Storage.CurrentContext.CreateMap(mapName).Get("enable").Equals(1);
         }
 
-        public static void Remove(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Delete((byte[])key);
+        public static void Remove(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Delete(key);
     }
 }

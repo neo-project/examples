@@ -6,7 +6,7 @@ namespace Template.NEP17.CSharp
 {
     public partial class NEP17 : SmartContract
     {
-        public static void _deploy(bool update)
+        public static void _deploy(object data, bool update)
         {
             if (update) return;
             if (TotalSupplyStorage.Get() > 0) throw new Exception("Contract has been deployed.");
