@@ -19,7 +19,7 @@ namespace Template.NEP17.CSharp
         public static BigInteger Get()
         {
             var value = Storage.CurrentContext.CreateMap(mapName).Get(key);
-            return value.Length > 0 ? (BigInteger)value : 0;
+            return value is null ? 0 : (BigInteger)value;
         }
     }
 }
