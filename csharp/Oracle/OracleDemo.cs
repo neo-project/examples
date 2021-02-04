@@ -11,7 +11,7 @@ namespace Neo.SmartContract.Examples
     {
         public static void DoRequest()
         {
-            string url = "https://127.0.0.1:8080/test"; // the return value is  { "value": "hello world" }, and when we use private host for testing, don't forget to set `AllowPrivateHost` true
+            string url = "https://neo.org/files/oracledemo.json"; // the return value is  { "value": "hello world" }
             string filter = "$.value";  // JSONPath format https://github.com/atifaziz/JSONPath
             string callback = "callback"; // callback method
             object userdata = "userdata"; // arbitrary type
@@ -22,7 +22,7 @@ namespace Neo.SmartContract.Examples
 
         public static void Callback(string url, string userdata, OracleResponseCode code, string result)
         {
-            if (code != OracleResponseCode.Success) throw new Exception(code.ToString());
+            if (code != OracleResponseCode.Success) throw new Exception($"Oracle response failure with code {(byte)code}.");
 
             object ret = Json.Deserialize(result); // [ "hello world" ]
             object[] arr = (object[])ret;
