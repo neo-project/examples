@@ -2,9 +2,9 @@ using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
 using System;
 
-namespace Template.NEP17.CSharp
+namespace Neo.SmartContract.Examples
 {
-    public partial class NEP17 : SmartContract
+    partial class NEP17
     {
         public static void _deploy(object data, bool update)
         {

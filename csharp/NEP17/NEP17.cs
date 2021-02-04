@@ -1,17 +1,16 @@
-using Neo;
 using Neo.SmartContract.Framework;
 using System;
 using System.ComponentModel;
 using System.Numerics;
 
-namespace Template.NEP17.CSharp
+namespace Neo.SmartContract.Examples
 {
     [DisplayName("Token Name")]
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP17")]
-    public partial class NEP17 : SmartContract
+    public partial class NEP17 : Framework.SmartContract
     {
         #region Token Settings
         static readonly ulong MaxSupply = 10_000_000_000_000_000;

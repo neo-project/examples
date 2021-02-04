@@ -1,9 +1,7 @@
-using Neo;
-using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
 using System.Numerics;
 
-namespace Template.NEP17.CSharp
+namespace Neo.SmartContract.Examples
 {
     public static class AssetStorage
     {
