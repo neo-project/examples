@@ -35,11 +35,10 @@ namespace Template.NEP17.CSharp
         private static void Mint(BigInteger amount)
         {
             var totalSupply = TotalSupplyStorage.Get();
-            if (totalSupply <= 0) throw new Exception("Contract not deployed.");
 
             var avaliable_supply = MaxSupply - totalSupply;
 
-            if (amount <= 0) throw new Exception("Amount cannot be zero.");
+            if (amount <= 0) throw new Exception("Amount must be greater than zero.");
             if (amount > avaliable_supply) throw new Exception("Insufficient supply for mint tokens.");
 
             Transaction tx = (Transaction)ExecutionEngine.ScriptContainer;

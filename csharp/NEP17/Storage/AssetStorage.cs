@@ -26,12 +26,13 @@ namespace Template.NEP17.CSharp
 
         public static void Put(UInt160 key, BigInteger value) => Storage.CurrentContext.CreateMap(mapName).Put(key, value);
 
-        public static BigInteger Get(UInt160 key) => (BigInteger)Storage.CurrentContext.CreateMap(mapName).Get(key);
-
-        public static bool GetPaymentStatus()
+        public static BigInteger Get(UInt160 key)
         {
-            return Storage.CurrentContext.CreateMap(mapName).Get("enable").Equals(1);
+            var value = Storage.CurrentContext.CreateMap(mapName).Get(key);
+            return value is null ? 0 : (BigInteger)value;
         }
+
+        public static bool GetPaymentStatus() => Storage.CurrentContext.CreateMap(mapName).Get("enable").Equals(1);
 
         public static void Remove(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Delete(key);
     }

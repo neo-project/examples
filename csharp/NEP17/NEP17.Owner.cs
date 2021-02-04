@@ -17,10 +17,10 @@ namespace Template.NEP17.CSharp
             OnTransfer(null, Owner, InitialSupply);
         }
 
-        public static void Update(byte[] nefFile, string manifest, object data)
+        public static void Update(ByteString nefFile, string manifest, object data)
         {
             if (!IsOwner()) throw new Exception("No authorization.");
-            ContractManagement.Update((ByteString)nefFile, manifest, data);
+            ContractManagement.Update(nefFile, manifest, data);
         }
 
         public static void Destroy()
