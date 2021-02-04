@@ -6,7 +6,7 @@ using System;
 using System.ComponentModel;
 using System.Numerics;
 
-namespace OracleContract
+namespace Neo.SmartContract.Examples
 {
     [DisplayName("Oracle Demo")]
     [ManifestExtra("Author", "Neo")]

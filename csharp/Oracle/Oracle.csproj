@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>OracleContract</RootNamespace>
-    <AssemblyName>OracleContract</AssemblyName>
+    <RootNamespace>Neo.SmartContract.Examples</RootNamespace>
+    <AssemblyName>OracleDemo</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
