@@ -25,13 +25,9 @@ namespace OracleContract
             Oracle.Request(url, filter, callback, userdata, gasForResponse);
         }
 
-        public static void Callback(string url, string userdata, int code, string result)
+        public static void Callback(string url, string userdata, OracleResponseCode code, string result)
         {
-            if (code != (int)OracleResponseCode.Success)
-            {
-                Runtime.Log("Oracle response failure with code " + Binary.Itoa(code));
-                return;
-            }
+            if (code != OracleResponseCode.Success) throw new Exception(code.ToString());
 
             object ret = Json.Deserialize(result); // [ "hello world" ]
             object[] arr = (object[])ret;
