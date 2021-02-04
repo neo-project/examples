@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
-    partial class NEP17
+    partial class NEP17Demo
     {
         public static BigInteger TotalSupply() => TotalSupplyStorage.Get();
 

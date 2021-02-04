@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
-    partial class NEP17
+    partial class NEP17Demo
     {
         public static void OnNEP17Payment(UInt160 from, BigInteger amount, object data)
         {

@@ -5,12 +5,11 @@ using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
-    [DisplayName("Token Name")]
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
-    [SupportedStandards("NEP17")]
-    public partial class NEP17 : Framework.SmartContract
+    [SupportedStandards("NEP-17")]
+    public partial class NEP17Demo : Framework.SmartContract
     {
         #region Token Settings
         static readonly ulong MaxSupply = 10_000_000_000_000_000;

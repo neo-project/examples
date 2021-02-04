@@ -4,7 +4,7 @@ using System;
 
 namespace Neo.SmartContract.Examples
 {
-    partial class NEP17
+    partial class NEP17Demo
     {
         public static void _deploy(object data, bool update)
         {
