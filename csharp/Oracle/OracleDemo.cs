@@ -1,18 +1,13 @@
-using Neo;
 using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
-using Neo.SmartContract.Framework.Services.System;
 using System;
-using System.ComponentModel;
-using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
-    [DisplayName("Oracle Demo")]
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is an oracle example")]
-    public class OracleDemo : SmartContract
+    public class OracleDemo : Framework.SmartContract
     {
         public static void DoRequest()
         {
