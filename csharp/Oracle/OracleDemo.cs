@@ -2,16 +2,16 @@ using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
 using System;
 
-namespace Neo.SmartContract.Examples
+namespace NeoSmartContractExamples
 {
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is an oracle example")]
-    public class OracleDemo : Framework.SmartContract
+    public class OracleDemo : SmartContract
     {
         public static void DoRequest()
         {
-            string url = "https://neo.org/files/oracledemo.json"; // the return value is  { "value": "hello world" }
+            string url = "https://github.com/neo-project/examples/tree/master/csharp/Oracle/OracleRequest.json"; // the return value is  { "value": "hello world" }
             string filter = "$.value";  // JSONPath format https://github.com/atifaziz/JSONPath
             string callback = "callback"; // callback method
             object userdata = "userdata"; // arbitrary type
@@ -22,7 +22,7 @@ namespace Neo.SmartContract.Examples
 
         public static void Callback(string url, string userdata, OracleResponseCode code, string result)
         {
-            if (code != OracleResponseCode.Success) throw new Exception($"Oracle response failure with code {(byte)code}.");
+            if (code != OracleResponseCode.Success) throw new Exception($"Oracle response failure with code" + (byte)code);
 
             object ret = Json.Deserialize(result); // [ "hello world" ]
             object[] arr = (object[])ret;
