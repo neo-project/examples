@@ -11,7 +11,7 @@ namespace Neo.SmartContract.Examples
     {
         public static void DoRequest()
         {
-            string url = "https://github.com/neo-project/examples/tree/master/csharp/Oracle/OracleRequest.json"; // the return value is  { "value": "hello world" }
+            string url = "https://github.com/neo-project/examples/tree/master/csharp/Oracle/OracleResponse.json"; // the return value is  { "value": "hello world" }
             string filter = "$.value";  // JSONPath format https://github.com/atifaziz/JSONPath
             string callback = "callback"; // callback method
             object userdata = "userdata"; // arbitrary type
