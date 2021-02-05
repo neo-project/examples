@@ -2,12 +2,12 @@ using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Services.Neo;
 using System;
 
-namespace NeoSmartContractExamples
+namespace Neo.SmartContract.Examples
 {
     [ManifestExtra("Author", "Neo")]
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is an oracle example")]
-    public class OracleDemo : SmartContract
+    public class OracleDemo : Framework.SmartContract
     {
         public static void DoRequest()
         {
