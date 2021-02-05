@@ -22,7 +22,7 @@ namespace Neo.SmartContract.Examples
 
         public static void Callback(string url, string userdata, OracleResponseCode code, string result)
         {
-            if (code != OracleResponseCode.Success) throw new Exception($"Oracle response failure with code" + (byte)code);
+            if (code != OracleResponseCode.Success) throw new Exception("Oracle response failure with code " + (byte)code);
 
             object ret = Json.Deserialize(result); // [ "hello world" ]
             object[] arr = (object[])ret;
