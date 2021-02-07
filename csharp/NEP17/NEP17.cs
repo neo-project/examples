@@ -9,6 +9,7 @@ namespace Neo.SmartContract.Examples
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP-17")]
+    [ContractPermission("*", "onNEP17Payment")]
     public partial class NEP17Demo : Framework.SmartContract
     {
         #region Token Settings
