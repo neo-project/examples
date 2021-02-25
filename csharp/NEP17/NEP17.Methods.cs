@@ -25,7 +25,7 @@ namespace Neo.SmartContract.Examples
 
             // Validate payable
             if (ContractManagement.GetContract(to) != null)
-                Contract.Call(to, "onNEP17Payment", CallFlags.ReadOnly, new object[] { from, amount, data });
+                Contract.Call(to, "onNEP17Payment", CallFlags.All, new object[] { from, amount, data });
             return true;
         }
     }
