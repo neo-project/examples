@@ -10,6 +10,8 @@ namespace Neo.SmartContract.Examples
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP-17")]
     [ContractPermission("*", "onNEP17Payment")]
+    [ContractPermission("0xfffdc93764dbaddd97c48f252a53ea4643faa3fd", "update")]
+    [ContractPermission("0xfffdc93764dbaddd97c48f252a53ea4643faa3fd", "destroy")]
     public partial class NEP17Demo : Framework.SmartContract
     {
         #region Token Settings
