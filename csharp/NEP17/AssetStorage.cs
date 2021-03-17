@@ -30,7 +30,7 @@ namespace Neo.SmartContract.Examples
             return value is null ? 0 : (BigInteger)value;
         }
 
-        public static bool GetPaymentStatus() => Storage.CurrentContext.CreateMap(mapName).Get("enable").Equals(1);
+        public static bool GetPaymentStatus() => ((BigInteger) Storage.CurrentContext.CreateMap(mapName).Get("enable")).Equals(1);
 
         public static void Remove(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Delete(key);
     }
