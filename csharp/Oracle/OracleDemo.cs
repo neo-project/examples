@@ -24,7 +24,7 @@ namespace Neo.SmartContract.Examples
         {
             if (code != OracleResponseCode.Success) throw new Exception("Oracle response failure with code " + (byte)code);
 
-            object ret = Json.Deserialize(result); // [ "hello world" ]
+            object ret = StdLib.JsonDeserialize(result); // [ "hello world" ]
             object[] arr = (object[])ret;
             string value = (string)arr[0];
 
