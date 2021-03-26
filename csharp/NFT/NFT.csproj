@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Neo3.Compiler.Dev" Version="3.1.0" />
+        <PackageReference Include="Neo.SmartContract.Framework" Version="3.0.0-rc1" />
+    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="$(neon3) -f &quot;$(TargetPath)&quot; -o" />
+    </Target>
+</Project>
