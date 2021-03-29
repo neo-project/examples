@@ -134,7 +134,16 @@ namespace NFT
             var totalSupply = TotalSupply();
             balance -= amount;
             totalSupply -= amount;
-            tokenBalanceMap.Put(tokenId, balance);
+            if (balance == 0)
+            {
+                tokenBalanceMap.Delete(tokenId);
+                StorageMap tokenOwnerMap = Storage.CurrentContext.CreateMap(CreateStorageKey(Prefix_TokenOwner, tokenId));
+                tokenOwnerMap.Delete(owner);
+            }
+            else
+            {
+                tokenBalanceMap.Put(tokenId, balance);
+            }
             SetTotalSupply(totalSupply);
 
             // Notify
