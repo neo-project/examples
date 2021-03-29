@@ -58,12 +58,14 @@ namespace NFT
 
         public static BigInteger TotalSupply()
         {
-            return ToBigInteger(StorageGet(Prefix_TotalSupply.ToByteArray()));
+            byte[] key = Prefix_TotalSupply.ToByteArray();
+            return (BigInteger)Storage.Get(Storage.CurrentContext, key);
         }
 
         private static void SetTotalSupply(BigInteger total)
         {
-            StoragePut(Prefix_TotalSupply.ToByteArray(), total);
+            byte[] key = Prefix_TotalSupply.ToByteArray();
+            Storage.Put(Storage.CurrentContext, key, total);
         }
 
         public static int Decimals()
@@ -84,7 +86,8 @@ namespace NFT
 
         public static string Properties(ByteString tokenid)
         {
-            return StorageGet(CreateStorageKey(Prefix_Properties, tokenid));
+            byte[] key = CreateStorageKey(Prefix_Properties, tokenid);
+            return Storage.Get(Storage.CurrentContext, key);
         }
 
         public static bool Mint(ByteString tokenId, UInt160 owner, byte[] properties)
@@ -98,7 +101,8 @@ namespace NFT
             if (tokenOwnerMap.Get(owner) != null) return false;
 
             StorageMap tokenOfMap = Storage.CurrentContext.CreateMap(CreateStorageKey(Prefix_TokensOf, owner));
-            StoragePut(CreateStorageKey(Prefix_Properties, tokenId), properties);
+            byte[] key = CreateStorageKey(Prefix_Properties, tokenId);
+            Storage.Put(Storage.CurrentContext, key, (ByteString)properties);
             tokenOwnerMap.Put(owner, owner);
             tokenOfMap.Put(tokenId, tokenId);
 
@@ -175,7 +179,7 @@ namespace NFT
             StorageMap fromTokensOfMap = Storage.CurrentContext.CreateMap(CreateStorageKey(Prefix_TokensOf, from));
             StorageMap toTokensOfMap = Storage.CurrentContext.CreateMap(CreateStorageKey(Prefix_TokensOf, to));
 
-            var fromTokenBalance = ToBigInteger(fromTokenBalanceMap.Get(tokenId));
+            var fromTokenBalance = (BigInteger)fromTokenBalanceMap.Get(tokenId);
             if (fromTokenBalance == 0 || fromTokenBalance < amount) return false;
             var fromNewBalance = fromTokenBalance - amount;
             if (fromNewBalance == 0)
@@ -185,7 +189,7 @@ namespace NFT
             }
             fromTokenBalanceMap.Put(tokenId, fromNewBalance);
 
-            var toTokenBalance = ToBigInteger(toTokenBalanceMap.Get(tokenId));
+            var toTokenBalance = (BigInteger)toTokenBalanceMap.Get(tokenId);
             if (toTokenBalance == 0 && amount > 0)
             {
                 tokenOwnerMap.Put(to, to);
