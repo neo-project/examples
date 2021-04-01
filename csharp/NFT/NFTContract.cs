@@ -92,7 +92,7 @@ namespace NFT
 
         public static bool Mint(ByteString tokenId, UInt160 owner, byte[] properties)
         {
-            if (!Runtime.CheckWitness(superAdmin)) return false;
+            if (!Runtime.CheckWitness(superAdmin)) throw new Exception("No authorization.");
 
             if (!owner.IsValid) throw new FormatException("The parameter 'owner' should be 20-byte address.");
             if (properties.Length > 2048) throw new FormatException("The length of 'properties' should be less than 2048.");
@@ -124,7 +124,7 @@ namespace NFT
 
             if (amount < 0 || amount > FACTOR) throw new FormatException("The parameters 'amount' is out of range.");
             if (amount == 0) return true;
-            if (!Runtime.CheckWitness(owner)) return false;
+            if (!Runtime.CheckWitness(owner)) throw new Exception("No authorization.");
 
             var tokenBalanceMap = Storage.CurrentContext.CreateMap(CreateStorageKey(Prefix_TokenBalance, owner));
             var balanceValue = tokenBalanceMap.Get(tokenId);
@@ -174,7 +174,7 @@ namespace NFT
             if (!to.IsValid) throw new FormatException("The parameter 'to' should be 20-byte address.");
 
             if (amount < 0 || amount > FACTOR) throw new FormatException("The parameters 'amount' is out of range.");
-            if (!Runtime.CheckWitness(from)) return false;
+            if (!Runtime.CheckWitness(from)) throw new Exception("No authorization.");
 
             if (from.Equals(to))
             {
@@ -217,10 +217,7 @@ namespace NFT
 
         public static bool Migrate(ByteString script, string manifest)
         {
-            if (!Runtime.CheckWitness(superAdmin))
-            {
-                return false;
-            }
+            if (!Runtime.CheckWitness(superAdmin)) throw new Exception("No authorization.");
             if (script.Length == 0 || manifest.Length == 0)
             {
                 return false;
@@ -231,10 +228,7 @@ namespace NFT
 
         public static bool Destroy()
         {
-            if (!Runtime.CheckWitness(superAdmin))
-            {
-                return false;
-            }
+            if (!Runtime.CheckWitness(superAdmin)) throw new Exception("No authorization.");
 
             ContractManagement.Destroy();
             return true;
