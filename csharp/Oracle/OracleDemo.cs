@@ -22,6 +22,7 @@ namespace Neo.SmartContract.Examples
 
         public static void Callback(string url, string userdata, OracleResponseCode code, string result)
         {
+            if (ExecutionEngine.CallingScriptHash != Oracle.Hash) throw new Exception("Unauthorized!");
             if (code != OracleResponseCode.Success) throw new Exception("Oracle response failure with code " + (byte)code);
 
             object ret = StdLib.JsonDeserialize(result); // [ "hello world" ]
