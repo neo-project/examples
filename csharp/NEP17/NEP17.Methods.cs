@@ -1,5 +1,5 @@
-using Neo.SmartContract.Framework.Services.Neo;
-using Neo.SmartContract.Framework.Services.System;
+using Neo.SmartContract.Framework.Native;
+using Neo.SmartContract.Framework.Services;
 using System;
 using System.Numerics;
 
@@ -14,7 +14,7 @@ namespace Neo.SmartContract.Examples
         public static bool Transfer(UInt160 from, UInt160 to, BigInteger amount, object data)
         {
             if (amount <= 0) throw new Exception("The parameter amount MUST be greater than 0.");
-            if (!Runtime.CheckWitness(from) && !from.Equals(ExecutionEngine.CallingScriptHash)) throw new Exception("No authorization.");
+            if (!Runtime.CheckWitness(from) && !from.Equals(Runtime.CallingScriptHash)) throw new Exception("No authorization.");
             if (AssetStorage.Get(from) < amount) throw new Exception("Insufficient balance.");
             if (from == to) return true;
 

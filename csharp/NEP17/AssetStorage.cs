@@ -1,17 +1,17 @@
-using Neo.SmartContract.Framework.Services.Neo;
+using Neo.SmartContract.Framework;
 using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
     public static class AssetStorage
     {
-        public static readonly string mapName = "asset";
+        public static readonly Map<string, BigInteger> asset = new();
 
         public static void Increase(UInt160 key, BigInteger value) => Put(key, Get(key) + value);
 
-        public static void Enable() => Storage.CurrentContext.CreateMap(mapName).Put("enable", 1);
+        public static void Enable() => asset["enable"] = 1;
 
-        public static void Disable() => Storage.CurrentContext.CreateMap(mapName).Put("enable", 0);
+        public static void Disable() => asset["enable"] = 0;
 
         public static void Reduce(UInt160 key, BigInteger value)
         {
@@ -22,16 +22,12 @@ namespace Neo.SmartContract.Examples
                 Put(key, oldValue - value);
         }
 
-        public static void Put(UInt160 key, BigInteger value) => Storage.CurrentContext.CreateMap(mapName).Put(key, value);
+        public static void Put(UInt160 key, BigInteger value) => asset[key] = value;
 
-        public static BigInteger Get(UInt160 key)
-        {
-            var value = Storage.CurrentContext.CreateMap(mapName).Get(key);
-            return value is null ? 0 : (BigInteger)value;
-        }
+        public static BigInteger Get(UInt160 key) => asset[key];
 
-        public static bool GetPaymentStatus() => ((BigInteger) Storage.CurrentContext.CreateMap(mapName).Get("enable")).Equals(1);
+        public static bool GetPaymentStatus() => asset["enable"].Equals(1);
 
-        public static void Remove(UInt160 key) => Storage.CurrentContext.CreateMap(mapName).Delete(key);
+        public static void Remove(UInt160 key) => asset.Remove(key);
     }
 }

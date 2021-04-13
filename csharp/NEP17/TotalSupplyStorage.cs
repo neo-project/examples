@@ -1,11 +1,11 @@
-using Neo.SmartContract.Framework.Services.Neo;
+using Neo.SmartContract.Framework;
 using System.Numerics;
 
 namespace Neo.SmartContract.Examples
 {
     public static class TotalSupplyStorage
     {
-        public static readonly string mapName = "contract";
+        public static readonly Map<string, BigInteger> contract = new();
 
         public static readonly string key = "totalSupply";
 
@@ -13,12 +13,8 @@ namespace Neo.SmartContract.Examples
 
         public static void Reduce(BigInteger value) => Put(Get() - value);
 
-        public static void Put(BigInteger value) => Storage.CurrentContext.CreateMap(mapName).Put(key, value);
+        public static void Put(BigInteger value) => contract[key] = value;
 
-        public static BigInteger Get()
-        {
-            var value = Storage.CurrentContext.CreateMap(mapName).Get(key);
-            return value is null ? 0 : (BigInteger)value;
-        }
+        public static BigInteger Get() => contract[key];
     }
 }
