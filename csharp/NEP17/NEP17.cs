@@ -9,13 +9,17 @@ namespace Neo.SmartContract.Examples
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP-17")]
-    [ContractPermission("*", "onNEP17Payment")]
+    [ContractPermission("*", "*")]
     public partial class NEP17Demo : Framework.SmartContract
     {
         #region Token Settings
+        [InitialValue("NhGobEnuWX5rVdpnuZZAZExPoRs5J6D2Sb", ContractParameterType.Hash160)]
+        private static readonly UInt160 Owner = default;
+        [InitialValue("NafhmudgK18CwxqKqcjoPoCqqZaHG4CUFS", ContractParameterType.Hash160)]
+        private static readonly UInt160 Owner2 = default;
+
         static readonly ulong MaxSupply = 10_000_000_000_000_000;
         static readonly ulong InitialSupply = 2_000_000_000_000_000;
-        static readonly UInt160 Owner = "NiNmXL8FjEUEs1nfX9uHFBNaenxDHJtmuB".ToScriptHash();
         static readonly ulong TokensPerNEO = 1_000_000_000;
         static readonly ulong TokensPerGAS = 1;
         #endregion
@@ -30,8 +34,12 @@ namespace Neo.SmartContract.Examples
         // For example, this method needs to be called when withdrawing token from the contract.
         public static bool Verify() => IsOwner();
 
-        public static string Symbol() => "TokenSymbol";
+        public static string Symbol() => "NTT";
 
         public static ulong Decimals() => 8;
+
+        public static UInt160 GetOwner() => Owner;
+
+        public static UInt160 GetOwner2() => Owner2;
     }
 }
