@@ -32,10 +32,13 @@ namespace Neo.SmartContract.Examples
         // For example, this method needs to be called when withdrawing token from the contract.
         public static bool Verify() => IsOwner();
 
+        [Safe]
         public static string Symbol() => "NTT";
 
+        [Safe]
         public static ulong Decimals() => 8;
 
+        [Safe]
         public static UInt160 GetOwner() => Owner;
 
     }

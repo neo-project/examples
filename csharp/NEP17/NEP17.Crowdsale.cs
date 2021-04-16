@@ -9,7 +9,7 @@ namespace Neo.SmartContract.Examples
     {
         public static void OnNEP17Payment(UInt160 from, BigInteger amount, object data)
         {
-            if (AssetStorage.GetPaymentStatus())
+            if (IsPayable())
             {
                 if (Runtime.CallingScriptHash == NEO.Hash)
                 {

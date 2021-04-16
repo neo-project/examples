@@ -1,3 +1,4 @@
+using Neo.SmartContract.Framework;
 using Neo.SmartContract.Framework.Native;
 using Neo.SmartContract.Framework.Services;
 using System;
@@ -7,8 +8,13 @@ namespace Neo.SmartContract.Examples
 {
     partial class NEP17Demo
     {
+        [Safe]
         public static BigInteger TotalSupply() => TotalSupplyStorage.Get();
 
+        [Safe]
+        public static bool IsPayable() => AssetStorage.GetPaymentStatus();
+
+        [Safe]
         public static BigInteger BalanceOf(UInt160 account) => AssetStorage.Get(account);
 
         public static bool Transfer(UInt160 from, UInt160 to, BigInteger amount, object data)
