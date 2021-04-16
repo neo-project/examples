@@ -9,14 +9,12 @@ namespace Neo.SmartContract.Examples
     [ManifestExtra("Email", "dev@neo.org")]
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP-17")]
-    [ContractPermission("*", "*")]
+    [ContractPermission("*", "onNEP17Payment")]
     public partial class NEP17Demo : Framework.SmartContract
     {
         #region Token Settings
         [InitialValue("NhGobEnuWX5rVdpnuZZAZExPoRs5J6D2Sb", ContractParameterType.Hash160)]
         private static readonly UInt160 Owner = default;
-        [InitialValue("NafhmudgK18CwxqKqcjoPoCqqZaHG4CUFS", ContractParameterType.Hash160)]
-        private static readonly UInt160 Owner2 = default;
 
         static readonly ulong MaxSupply = 10_000_000_000_000_000;
         static readonly ulong InitialSupply = 2_000_000_000_000_000;
@@ -40,6 +38,5 @@ namespace Neo.SmartContract.Examples
 
         public static UInt160 GetOwner() => Owner;
 
-        public static UInt160 GetOwner2() => Owner2;
     }
 }
