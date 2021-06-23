@@ -15,6 +15,8 @@ namespace Neo.SmartContract.Examples
     {
         [InitialValue("NhGobEnuWX5rVdpnuZZAZExPoRs5J6D2Sb", ContractParameterType.Hash160)]
         private static readonly UInt160 owner = default;
+        private static readonly byte[] ContractPrefix = new byte[] { 0x01, 0x01 };
+        public static readonly StorageMap ContractMap = new StorageMap(Storage.CurrentContext, ContractPrefix);
         private static readonly byte[] ownerKey = "owner".ToByteArray();
         private static bool IsOwner() => Runtime.CheckWitness(GetOwner());
         public override byte Decimals() => 8;
@@ -23,7 +25,7 @@ namespace Neo.SmartContract.Examples
         public static void _deploy(object data, bool update)
         {
             if (update) return;
-            Storage.Put(Storage.CurrentContext, ownerKey, owner);
+            ContractMap.Put(ownerKey, owner);
         }
 
         public static UInt160 GetOwner()
