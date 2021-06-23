@@ -45,10 +45,10 @@ namespace Neo.SmartContract.Examples
             Nep17Token.Burn(account, amount);
         }
 
-        public static bool Update(ByteString nefFile, string manifest, object data = null)
+        public static bool Update(ByteString nefFile, string manifest)
         {
             if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
-            ContractManagement.Update(nefFile, manifest, data);
+            ContractManagement.Update(nefFile, manifest, null);
             return true;
         }
 
