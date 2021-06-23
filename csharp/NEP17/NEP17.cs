@@ -30,7 +30,7 @@ namespace Neo.SmartContract.Examples
 
         public static UInt160 GetOwner()
         {
-            return (UInt160)Storage.Get(Storage.CurrentContext, ownerKey);
+            return (UInt160)ContractMap.Get(ownerKey);
         }
 
         public static new void Mint(UInt160 account, BigInteger amount)
