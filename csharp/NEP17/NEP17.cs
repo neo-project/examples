@@ -32,6 +32,7 @@ namespace Neo.SmartContract.Examples
         {
             return (UInt160)Storage.Get(Storage.CurrentContext, ownerKey);
         }
+
         public static new void Mint(UInt160 account, BigInteger amount)
         {
             if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
