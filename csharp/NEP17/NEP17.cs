@@ -1,6 +1,7 @@
 using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework.Native;
+using Neo.SmartContract.Framework.Services;
 using System;
-using System.ComponentModel;
 using System.Numerics;
 
 namespace Neo.SmartContract.Examples
@@ -10,28 +11,53 @@ namespace Neo.SmartContract.Examples
     [ManifestExtra("Description", "This is a NEP17 example")]
     [SupportedStandards("NEP-17")]
     [ContractPermission("*", "onNEP17Payment")]
-    public partial class NEP17Demo : Framework.SmartContract
+    public partial class NEP17Demo : Nep17Token
     {
-        #region Token Settings
-        static readonly ulong MaxSupply = 10_000_000_000_000_000;
-        static readonly ulong InitialSupply = 2_000_000_000_000_000;
-        static readonly UInt160 Owner = "NiNmXL8FjEUEs1nfX9uHFBNaenxDHJtmuB".ToScriptHash();
-        static readonly ulong TokensPerNEO = 1_000_000_000;
-        static readonly ulong TokensPerGAS = 1;
-        #endregion
+        [InitialValue("NhGobEnuWX5rVdpnuZZAZExPoRs5J6D2Sb", ContractParameterType.Hash160)]
+        private static readonly UInt160 owner = default;
+        // Prefix_TotalSupply = 0x00; Prefix_Balance = 0x01;
+        private const byte Prefix_Contract = 0x02;
+        public static readonly StorageMap ContractMap = new StorageMap(Storage.CurrentContext, Prefix_Contract);
+        private static readonly byte[] ownerKey = "owner".ToByteArray();
+        private static bool IsOwner() => Runtime.CheckWitness(GetOwner());
+        public override byte Decimals() => 8;
+        public override string Symbol() => "NEP17";
 
-        #region Notifications
-        [DisplayName("Transfer")]
-        public static event Action<UInt160, UInt160, BigInteger> OnTransfer;
-        #endregion
+        public static void _deploy(object data, bool update)
+        {
+            if (update) return;
+            ContractMap.Put(ownerKey, owner);
+        }
 
-        // When this contract address is included in the transaction signature,
-        // this method will be triggered as a VerificationTrigger to verify that the signature is correct.
-        // For example, this method needs to be called when withdrawing token from the contract.
-        public static bool Verify() => IsOwner();
+        public static UInt160 GetOwner()
+        {
+            return (UInt160)ContractMap.Get(ownerKey);
+        }
 
-        public static string Symbol() => "TokenSymbol";
+        public static new void Mint(UInt160 account, BigInteger amount)
+        {
+            if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
+            Nep17Token.Mint(account, amount);
+        }
 
-        public static ulong Decimals() => 8;
+        public static new void Burn(UInt160 account, BigInteger amount)
+        {
+            if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
+            Nep17Token.Burn(account, amount);
+        }
+
+        public static bool Update(ByteString nefFile, string manifest)
+        {
+            if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
+            ContractManagement.Update(nefFile, manifest, null);
+            return true;
+        }
+
+        public static bool Destroy()
+        {
+            if (!IsOwner()) throw new InvalidOperationException("No Authorization!");
+            ContractManagement.Destroy();
+            return true;
+        }
     }
 }
