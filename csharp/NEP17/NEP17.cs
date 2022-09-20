@@ -1,4 +1,5 @@
 using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework.Attributes;
 using Neo.SmartContract.Framework.Native;
 using Neo.SmartContract.Framework.Services;
 using System;
@@ -20,13 +21,16 @@ namespace Neo.SmartContract.Examples
         public static readonly StorageMap ContractMap = new StorageMap(Storage.CurrentContext, Prefix_Contract);
         private static readonly byte[] ownerKey = "owner".ToByteArray();
         private static bool IsOwner() => Runtime.CheckWitness(GetOwner());
-        public override byte Decimals() => 8;
+        public override byte Decimals() => Factor();
         public override string Symbol() => "NEP17";
+
+        public static byte Factor() => 8;
 
         public static void _deploy(object data, bool update)
         {
             if (update) return;
             ContractMap.Put(ownerKey, owner);
+            Nep17Token.Mint(owner, 100000000 * BigInteger.Pow(10, Factor()));
         }
 
         public static UInt160 GetOwner()
